@@ -1,10 +1,13 @@
+import { Outlet } from 'react-router-dom';
+import Header from './header';
+
+
 function Layout(){
   return(
-    <>
-      <div>헤더자리</div>
-      <div>아울렛자리</div>
-      <div>푸터자리</div>
-    </>
+    <div>
+      <Header/>
+      <Outlet/>
+    </div>
   )
 }
 
