@@ -1,6 +1,8 @@
 import GlobalLayout from './components/Layout';
 import { createBrowserRouter } from 'react-router-dom';
 import Main from './pages/Main';
+import Social from './pages/Community/SocialMainPage';
+import SocialIndex from './pages/Community/SocialIndexPage';
 
 export const router = createBrowserRouter([
   {
@@ -10,6 +12,14 @@ export const router = createBrowserRouter([
       {
         path:"/",
         element:<Main/> // 
+      },
+      {
+        path:"/post",
+        element:<Social/> // 
+      },
+      {
+        path:"/postindex",
+        element:<SocialIndex/> // 
       },
     ],
   }
