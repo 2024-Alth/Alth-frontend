@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
+  onClose: () => void; 
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClose }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     onSearch(query);
@@ -25,6 +26,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
       />
+      <CloseButton onClick={onClose}>닫기</CloseButton>
     </SearchContainer>
   );
 };
@@ -33,20 +35,28 @@ export default SearchBar;
 
 const SearchContainer = styled.div`
   display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 50px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-bottom: 30px;
+  background-color: #fff;
+  z-index: 1; 
+  transition: top 0.3s ease; 
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px solid #e1e1e1;
 `;
 
 const InputText = styled.input`
   width: 100%;
-  padding-left: 15px;
+  padding-left: 30px;
   border: none;
   outline: none;
-  border-radius: 10px;
   font-size: 16px;
 `;
 
+const CloseButton = styled.button`
+  display: flex;
+  width: 50px;
+  font-size: 16px;
+  padding: 5px;
+  border: 1px solid #e1e1e1;
+  align-items: center;
+  justify-content: center;
+`;
