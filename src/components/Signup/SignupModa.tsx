@@ -3,34 +3,39 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 
 function SignupModal(){
-  const [email,setEmail] = useState<string|undefined>('')
-  const [name,setName] = useState<string|undefined>('')
+
+  const [form,setForm] = useState({
+    email: '',
+    password: '',
+    name:'',
+    nickname : '',
+    enjoyDrink:false,
+    favorLiquor:''
+  })
+
   const [password, setPassword] = useState<string|undefined>('')
-  const [nickname, setNickname] = useState<string|undefined>('')
-  const [isDrink, setIsDrink] = useState<boolean|undefined>(true)
   const [year, setYear] = useState<string|undefined>('');
   const [year2, setYear2] = useState<string|undefined>('');
   const [month, setMonth] = useState<string|undefined>('');
   const [day, setDay] = useState<string|undefined>('');
-  const [favorLiquor, setFavorLiquor] = useState<string|undefined>('');
 
   useEffect(()=>{
     setYear2(year?.substring(2,4))
   },[year])
   
-  const getSignup = async () => {
+  const postSignup = async () => {
     try{
       const response = await axios({
         method: 'post',
         url: 'http://localhost:8080/signIn',
         data:{
-          email: email,
-          password: password,
-          name: name,
-          nickname: nickname,
+          email: form.email,
+          password: form.password,
+          name: form.name,
+          nickname: form.nickname,
           birth: `${year2}${month}${day}`,
-          enjoyDrink: isDrink,
-          favorLiquor: favorLiquor
+          enjoyDrink: form.enjoyDrink,
+          favorLiquor: form.favorLiquor
         }
       })
       alert(response.data)
@@ -46,19 +51,24 @@ function SignupModal(){
         회원가입
       </Text>
       <IdDiv>
-        <LoginInput type="email" value={email} placeholder="이메일" onChange={(e)=>setEmail(e.target.value)}></LoginInput>
+        <LoginInput 
+          type="email" 
+          value={form.email} 
+          placeholder="이메일" 
+          onChange={(e)=>setForm({...form, email:e.target.value})}
+        />
       </IdDiv>
       <IdDiv>
-        <LoginInput type="password" value={password} placeholder="비밀번호" onChange={(e)=> setPassword(e.target.value)}></LoginInput>
+        <LoginInput type="password" value={form.password} placeholder="비밀번호" onChange={(e)=> setForm({...form, password:e.target.value})}></LoginInput>
       </IdDiv>
       <IdDiv>
         <LoginInput type="password" value={password} placeholder="비밀번호 확인" onChange={(e)=> setPassword(e.target.value)}></LoginInput>
       </IdDiv>
       <IdDiv>
-        <LoginInput type="text" value={name} placeholder="이름" onChange={(e)=>setName(e.target.value)}></LoginInput>
+        <LoginInput type="text" value={form.name} placeholder="이름" onChange={(e)=>setForm({...form, name:e.target.value})}></LoginInput>
       </IdDiv>
       <IdDiv>
-        <LoginInput type="text" value={nickname} placeholder="닉네임" onChange={(e)=> setNickname(e.target.value)}></LoginInput>
+        <LoginInput type="text" value={form.nickname} placeholder="닉네임" onChange={(e)=> setForm({...form, nickname: e.target.value})}></LoginInput>
       </IdDiv>
       <ChoiceLayout>
         <YearInput placeholder="0000" value={year} onChange={(e)=>setYear(e.target.value)}></YearInput>년
@@ -103,15 +113,15 @@ function SignupModal(){
         <DayInput placeholder="00" value={day} onChange={(e)=>setDay(e.target.value)}></DayInput>일
       </ChoiceLayout>
       <ChoiceLayout>
-        <DrinkChoiceButton onClick={()=>setIsDrink(true)}>
+        <DrinkChoiceButton onClick={()=>setForm({...form,enjoyDrink:true})}>
           음주
         </DrinkChoiceButton>
-        <DrinkChoiceButton onClick={()=>setIsDrink(false)} >
+        <DrinkChoiceButton onClick={()=>setForm({...form,enjoyDrink:false})} >
           금주
         </DrinkChoiceButton>
       </ChoiceLayout>
       <ChoiceLayout>
-        <AlcoholSelect value={favorLiquor} onChange={(e)=>setFavorLiquor(e.target.value)}>
+        <AlcoholSelect value={form.favorLiquor} onChange={(e)=>setForm({...form, favorLiquor:e.target.value})}>
           <option disabled selected>
             주종
           </option>
@@ -126,7 +136,7 @@ function SignupModal(){
           </option>
         </AlcoholSelect>
       </ChoiceLayout>
-      <Button onClick={getSignup}>
+      <Button onClick={postSignup}>
         회원가입
       </Button>
     </Layout>
