@@ -25,16 +25,20 @@ function SignupModal(){
     favorLiquor:false
   })
 
-  const [password, setPassword] = useState<string|undefined>('')
+  const [pwDoubleCheck, setPwDoubleCheck] = useState<string|undefined>('')
   const [year, setYear] = useState<string|undefined>('');
   const [year2, setYear2] = useState<string|undefined>('');
   const [month, setMonth] = useState<string|undefined>('');
   const [day, setDay] = useState<string|undefined>('');
   const [emailVal, setEmailVal] = useState<boolean|undefined>(true);
+  const [passwordVal, setPasswordVal] = useState<boolean|undefined>(true);
+  const [birthdayVal, setBirthdayVal] = useState<boolean|undefined>(false);
+
 
   useEffect(()=>{
     setYear2(year?.substring(2,4))
   },[year])
+
   
   const postSignup = async () => {
     try{
@@ -73,6 +77,49 @@ function SignupModal(){
     }
   }
 
+  const PassWordDoubleChecking = (password:string,pwDoubleCheck:string|undefined) =>{
+    if(password === pwDoubleCheck){
+      setPasswordVal(true)
+    }else{
+      setPasswordVal(false)
+    }
+  }
+
+  const ValidationPassword = (password:any) =>{
+    if(password === ''){
+      setIsNullForm({...isNullForm, password:true})
+    }else{
+      setIsNullForm({...isNullForm, password:false})
+      PassWordDoubleChecking(password,pwDoubleCheck);
+    }
+  }
+
+  const ValidationPasswordDC = (passwordDC : any) => {
+    if(passwordDC === ''){
+      setIsNullForm({...isNullForm, passwordVail:true})
+    }else{
+      setIsNullForm({...isNullForm, passwordVail:false})
+      PassWordDoubleChecking(form.password,passwordDC);
+    }
+  }
+
+  const ValidationName = (name : any) =>{
+    if(name === ''){
+      setIsNullForm({...isNullForm, name:true})
+    }else{
+      setIsNullForm({...isNullForm, name:false})
+    }
+  }
+
+  const ValidationNickName = (nickname : any) =>{
+    if(nickname === ''){
+      setIsNullForm({...isNullForm, nickname:true})
+    }else{
+      setIsNullForm({...isNullForm, nickname:false})
+    }
+  }
+
+
   return(
     <Layout>
       <Text>
@@ -90,20 +137,56 @@ function SignupModal(){
       {isNullForm.email ? <div>* 이메일 : 필수정보입니다!</div> : <div></div>}
       {emailVal ? <div></div> : <div>* 이메일 : 이메일형식이 아닙니다!</div>}
       <IdDiv>
-        <LoginInput type="password" value={form.password} placeholder="비밀번호" onChange={(e)=> setForm({...form, password:e.target.value})}></LoginInput>
+        <LoginInput 
+          type="password" 
+          value={form.password} 
+          placeholder="비밀번호" 
+          onChange={(e)=> setForm({...form, password:e.target.value})}
+          onBlur={(e)=>ValidationPassword(e.target.value)}
+        />
       </IdDiv>
+      {isNullForm.password ? <div>* 비밀번호 : 필수정보입니다!</div> : <div></div>}
       <IdDiv>
-        <LoginInput type="password" value={password} placeholder="비밀번호 확인" onChange={(e)=> setPassword(e.target.value)}></LoginInput>
+        <LoginInput 
+          type="password" 
+          value={pwDoubleCheck} 
+          placeholder="비밀번호 확인" 
+          onChange={(e)=> setPwDoubleCheck(e.target.value)}
+          onBlur={(e)=>ValidationPasswordDC(e.target.value)}
+        />
       </IdDiv>
+      {isNullForm.passwordVail ? <div>* 비밀번호 확인 : 필수정보입니다!</div> : <div>{
+        passwordVal ? '' : '* 비밀번호 확인 : 동일하지 않습니다!'
+      }</div>}
       <IdDiv>
-        <LoginInput type="text" value={form.name} placeholder="이름" onChange={(e)=>setForm({...form, name:e.target.value})}></LoginInput>
+        <LoginInput 
+          type="text" 
+          value={form.name} 
+          placeholder="이름" 
+          onChange={(e)=>setForm({...form, name:e.target.value})}
+          onBlur={(e)=>ValidationName(e.target.value)}
+        ></LoginInput>
       </IdDiv>
+      {isNullForm.name ? <div>* 이름 : 필수정보입니다!</div> : <div></div>}
       <IdDiv>
-        <LoginInput type="text" value={form.nickname} placeholder="닉네임" onChange={(e)=> setForm({...form, nickname: e.target.value})}></LoginInput>
+        <LoginInput 
+          type="text" 
+          value={form.nickname} 
+          placeholder="닉네임" 
+          onChange={(e)=> setForm({...form, nickname: e.target.value})}
+          onBlur={(e)=>ValidationNickName(e.target.value)}
+        />
       </IdDiv>
+      {isNullForm.nickname ? <div>* 닉네임 : 필수정보입니다!</div> : <div></div>}
       <ChoiceLayout>
-        <YearInput placeholder="0000" value={year} onChange={(e)=>setYear(e.target.value)}></YearInput>년
-        <MonthSelect value={month} onChange={(e)=>setMonth(e.target.value)}>
+        <YearInput 
+          placeholder="0000" 
+          value={year} 
+          onChange={(e)=>setYear(e.target.value)}
+          ></YearInput>년
+        <MonthSelect
+          value={month} 
+          onChange={(e)=>setMonth(e.target.value)}>
           <option value="1">
             1
           </option>
@@ -141,7 +224,11 @@ function SignupModal(){
             12
           </option>
         </MonthSelect>월
-        <DayInput placeholder="00" value={day} onChange={(e)=>setDay(e.target.value)}></DayInput>일
+        <DayInput 
+          placeholder="00" 
+          value={day} 
+          onChange={(e)=>setDay(e.target.value)}
+        ></DayInput>일
       </ChoiceLayout>
       <ChoiceLayout>
         <DrinkChoiceButton onClick={()=>setForm({...form,enjoyDrink:true})}>
