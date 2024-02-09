@@ -13,11 +13,24 @@ function SignupModal(){
     favorLiquor:''
   })
 
+  const [isNullForm, setIsNullForm] = useState({
+    email:false,
+    password:false,
+    passwordVail: false,
+    name:false,
+    year:false,
+    month:false,
+    day:false,
+    nickname: false,
+    favorLiquor:false
+  })
+
   const [password, setPassword] = useState<string|undefined>('')
   const [year, setYear] = useState<string|undefined>('');
   const [year2, setYear2] = useState<string|undefined>('');
   const [month, setMonth] = useState<string|undefined>('');
   const [day, setDay] = useState<string|undefined>('');
+  const [emailVal, setEmailVal] = useState<boolean|undefined>(true);
 
   useEffect(()=>{
     setYear2(year?.substring(2,4))
@@ -44,6 +57,21 @@ function SignupModal(){
     }
   };
 
+  const CheckEmail = (email:any) =>{
+    const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+    console.log(emailRegEx.test(email))
+    return emailRegEx.test(email)
+  }
+
+  const ValidationEmail = (email:any) =>{
+    if(email === ''){
+      setIsNullForm({...isNullForm, email:true})
+      setEmailVal(true)
+    }else{
+      setIsNullForm({...isNullForm, email:false})
+      setEmailVal(CheckEmail(email))
+    }
+  }
 
   return(
     <Layout>
@@ -56,8 +84,11 @@ function SignupModal(){
           value={form.email} 
           placeholder="이메일" 
           onChange={(e)=>setForm({...form, email:e.target.value})}
+          onBlur={(e)=>ValidationEmail(e.target.value)}
         />
       </IdDiv>
+      {isNullForm.email ? <div>* 이메일 : 필수정보입니다!</div> : <div></div>}
+      {emailVal ? <div></div> : <div>* 이메일 : 이메일형식이 아닙니다!</div>}
       <IdDiv>
         <LoginInput type="password" value={form.password} placeholder="비밀번호" onChange={(e)=> setForm({...form, password:e.target.value})}></LoginInput>
       </IdDiv>
