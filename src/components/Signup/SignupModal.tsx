@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 
 function SignupModal(){
-
   const [form,setForm] = useState({
     email: '',
     password: '',
@@ -27,33 +26,39 @@ function SignupModal(){
 
   const [pwDoubleCheck, setPwDoubleCheck] = useState<string|undefined>('')
   const [year, setYear] = useState<string|undefined>('');
-  const [year2, setYear2] = useState<string|undefined>('');
   const [month, setMonth] = useState<string|undefined>('');
   const [day, setDay] = useState<string|undefined>('');
   const [emailVal, setEmailVal] = useState<boolean|undefined>(true);
   const [passwordVal, setPasswordVal] = useState<boolean|undefined>(true);
-  const [birthdayVal, setBirthdayVal] = useState<boolean|undefined>(false);
 
-
-  useEffect(()=>{
-    setYear2(year?.substring(2,4))
-  },[year])
-
-  
   const postSignup = async () => {
+    console.log(
+      {
+        email: form.email,
+        password: form.password,
+        name: form.name,
+        nickname: form.nickname,
+        birth: `${year?.substring(2,4)}${month}${day}`,
+        enjoyDrink: form.enjoyDrink,
+        favorLiquor: form.favorLiquor
+      }
+    )
     try{
       const response = await axios({
         method: 'post',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
         url: 'http://localhost:8080/signIn',
         data:{
           email: form.email,
           password: form.password,
           name: form.name,
           nickname: form.nickname,
-          birth: `${year2}${month}${day}`,
-          enjoyDrink: form.enjoyDrink,
+          birth: `${year?.substring(2,4)}${month}${day}`,
+          enjoyDrink: 'DRINK',
           favorLiquor: form.favorLiquor
-        }
+        },
       })
       alert(response.data)
     }catch(e){
@@ -187,31 +192,31 @@ function SignupModal(){
         <MonthSelect
           value={month} 
           onChange={(e)=>setMonth(e.target.value)}>
-          <option value="1">
+          <option value="01">
             1
           </option>
-          <option value="2">
+          <option value="02">
             2
           </option>
-          <option value="3">
+          <option value="03">
             3
           </option>
-          <option value="4">
+          <option value="04">
             4
           </option>
-          <option value="5">
+          <option value="05">
             5
           </option>
-          <option value="6">
+          <option value="06">
             6
           </option>
-          <option value="7">
+          <option value="07">
             7
           </option>
-          <option value="8">
+          <option value="08">
             8
           </option>
-          <option value="9">
+          <option value="09">
             9
           </option>
           <option value="10">
@@ -231,10 +236,10 @@ function SignupModal(){
         ></DayInput>일
       </ChoiceLayout>
       <ChoiceLayout>
-        <DrinkChoiceButton onClick={()=>setForm({...form,enjoyDrink:true})}>
+        <DrinkChoiceButton choice={form.enjoyDrink} onClick={()=>setForm({...form,enjoyDrink:true})}>
           음주
         </DrinkChoiceButton>
-        <DrinkChoiceButton onClick={()=>setForm({...form,enjoyDrink:false})} >
+        <DrinkChoiceButton choice={!form.enjoyDrink} onClick={()=>setForm({...form,enjoyDrink:false})} >
           금주
         </DrinkChoiceButton>
       </ChoiceLayout>
@@ -283,7 +288,7 @@ const AlcoholSelect = styled.select`
 
 const DrinkChoiceButton = styled.div`
   width: 40%;
-  background-color: #3ccd7e;
+  background-color: #60D394;
   font-size: 20px;
   font-weight: bold;
   color: white;
