@@ -9,11 +9,11 @@ import SearchBar from "./Searchbar"
 function Header() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
-  const modalBackground = useRef();
+  const modalBackground = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (modalOpen && modalBackground.current && !modalBackground.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalOpen && modalBackground.current && !modalBackground.current.contains(e.target as Node)) {
         setModalOpen(false);
       }
     };
@@ -124,7 +124,9 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
-  margin-left: 50px;
+  position: absolute;
+  left: 50%;  
+  transform: translateX(-50%);
 `
 
 const IconContainer = styled.div`

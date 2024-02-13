@@ -36,7 +36,6 @@ export default SearchBar;
 const SearchContainer = styled.div`
   display: flex;
   background-color: #fff;
-  z-index: 1; 
   transition: top 0.3s ease; 
   padding-bottom: 5px;
   padding-top: 5px;

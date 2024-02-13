@@ -1,17 +1,13 @@
 import styled from "styled-components";
-import SearchBar from '../../components/Searchbar';
 import TopPosts from '../../components/Community/TopPostsContainer';
 import LatestPosts from '../../components/Community/LatestPostsContainer';
 
-function SocialPage() {
-  const handleSearch = (query: string) => {
-    console.log('Searching for:', query);
-  };
+function SocialMainPage() {
 
   return (
     <>
       <Layout>
-        <SearchBar onSearch={handleSearch} />
+        <br/>
         <TopPosts></TopPosts>
         <LatestPosts></LatestPosts>
       </Layout>
@@ -19,7 +15,7 @@ function SocialPage() {
   );
 }
 
-export default SocialPage;
+export default SocialMainPage;
 
 export const Layout = styled.div`
   background-color: #FFFFFF;
