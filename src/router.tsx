@@ -1,7 +1,6 @@
 import GlobalLayout from './components/Layout';
 import { createBrowserRouter } from 'react-router-dom';
 import Main from './pages/Main';
-import Main from './pages/Main';
 import Social from './pages/Community/SocialMainPage';
 import SocialIndex from './pages/Community/SocialIndex/SocialIndexPage';
 import SocialPostPage from './pages/Community/SocialPost/SocialPostPage'; 
