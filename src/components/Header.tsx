@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { useLocation } from "react-router-dom";
 import styled from "styled-components"
 import button from "../assets/headerbutton.svg"
 import profilebutton from "../assets/profile.svg"
@@ -30,16 +31,10 @@ function Header() {
     setSearchBarOpen(!searchBarOpen);
   };
 
-  const getCurrentPath = () => {
-    return window.location.pathname;
-  };
-
-  // "post"가 포함되어 있는지 확인하는 함수
   const isPostPage = () => {
-    const currentPath = getCurrentPath();
-    return currentPath.includes("post");
+    const location = useLocation();
+    return location.pathname.includes("post");
   };
-
 
   return (
     <>

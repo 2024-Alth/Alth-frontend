@@ -1,9 +1,10 @@
 // TopPostsContainer.tsx
 
-import React from 'react';
 import styled from 'styled-components';
 
-const TopPostsContainer: React.FC = () => {
+type TopPostsContainerProps = {};
+
+const TopPostsContainer = ({ }: TopPostsContainerProps) => {
   return (
     <Container>
       <TitleContainer>

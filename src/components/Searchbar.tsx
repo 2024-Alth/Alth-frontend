@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
 interface SearchBarProps {
@@ -6,8 +6,8 @@ interface SearchBarProps {
   onClose: () => void; 
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClose }) => {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+const SearchBar = ({ onSearch, onClose }: SearchBarProps) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     onSearch(query);
   };
