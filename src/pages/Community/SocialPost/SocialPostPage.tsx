@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import CommentComponent from '../../../components/Community/Comment';
+import ReplyComponent from '../../../components/Community/ReplyComment';
 import * as S from './Styles';
 
 function SocialPostPage() {
     const [isLiked, setIsLiked] = useState(false);
+    const [replies, setReplies] = useState<boolean[]>([]);
 
     const dummyPost = {
         title: "게시물 제목은 예시랍니다",
@@ -11,14 +14,32 @@ function SocialPostPage() {
         commentCount: 5,
         heartCount: 7,
         comments: [
-            { username: "User1", content: "댓글 내용 1", likes: 3 },
-            { username: "User2", content: "댓글 내용 2", likes: 1 },
+            { username: "User1", content: "댓글 내용 1" },
+            { username: "User2", content: "댓글 내용 2" },
         ],
     };
 
     const handleLikeClick = () => {
         setIsLiked((prev) => !prev);
-      };
+    };
+
+    const [showReplyInput, setShowReplyInput] = useState<boolean[]>(Array(dummyPost.comments.length).fill(false));
+
+
+    const handleRecommentClick = (commentIndex: number) => {
+        const newReplies = [...replies];
+        newReplies[commentIndex] = !newReplies[commentIndex]; //대댓글 창 확장, 축소
+        setReplies(newReplies); //상태 업데이트
+        setShowReplyInput((prev) => {
+            const newShowInputs = [...prev];
+            newShowInputs[commentIndex] = true;
+            return newShowInputs;
+        });
+    };
+
+    const handleRecommentSubmit = (commentIndex: number, replyContent: string) => {
+        console.log(`${commentIndex}: ${replyContent}`);
+    };
 
     return (
         <>
@@ -29,7 +50,7 @@ function SocialPostPage() {
                 <S.Divider />
                 <S.InteractionContainer>
                     <S.LikeButton isActive={isLiked} onClick={handleLikeClick}>
-                        공감하기 🙂
+                        좋아요 🙂
                     </S.LikeButton>
                     <S.CommentCount>{dummyPost.commentCount} 댓글</S.CommentCount>
                     <S.HeartCount>{dummyPost.heartCount} ♡</S.HeartCount>
@@ -37,14 +58,18 @@ function SocialPostPage() {
                 <S.Divider />
                 {dummyPost.comments.map((comment, index) => (
                     <React.Fragment key={index}>
-                        <S.CommentContainer>
-                            <S.CommentUsername>{comment.username}</S.CommentUsername>
-                            <S.CommentContent>{comment.content}</S.CommentContent>
-                            <S.CommentLikes>{comment.likes} ♡</S.CommentLikes>
-                        </S.CommentContainer>
+                        <CommentComponent
+                            username={comment.username}
+                            content={comment.content}
+                            onRecommentClick={() => handleRecommentClick(index)}
+                        />
+                        {replies[index] && showReplyInput[index] && (
+                            <ReplyComponent
+                            onRecommentSubmit={(replyContent) => handleRecommentSubmit(index, replyContent)} />
+                        )}
                         <S.Divider />
                     </React.Fragment>
-                ))} 
+                ))}
             </S.Layout>
             <S.CommentInput placeholder="댓글을 입력해주세요." />
         </>

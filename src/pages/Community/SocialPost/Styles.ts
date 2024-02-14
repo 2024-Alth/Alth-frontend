@@ -15,13 +15,13 @@ export const Layout = styled.div`
 `
 
 export const Title = styled.div`
-  font-size: 18pt;
+  font-size: 16pt;
   font-weight: bold;
   text-align: left;
 `;
 
 export const Content = styled.div`
-  font-size: 13pt;
+  font-size: 12pt;
   margin-bottom: 10%;
   margin-top: 10%;
   height: 30%;
@@ -31,6 +31,7 @@ export const InteractionContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  font-size: 12pt;
   position: relative;
 `;
 
@@ -67,32 +68,6 @@ export const Divider = styled.div`
   margin: 5px 0;
 `;
 
-export const CommentContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column; 
-  position: relative;
-  padding: 5px;
-`;
-
-export const CommentUsername = styled.div`
-  font-size: 14pt;
-  margin-bottom: 5px;  
-  text-align: left;
-`;
-
-export const CommentContent = styled.div`
-  font-size: 12pt;
-  text-align: left;
-`;
-
-export const CommentLikes = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-`;
-
 export const CommentInput = styled.input`
   width: 100%;
   padding: 10px;
@@ -108,3 +83,4 @@ export const CommentInput = styled.input`
     color: #CCCCCC;
   }
 `;
+
