@@ -1,16 +1,22 @@
-import styled from "styled-components"
+import { useState } from "react";
+import styled from "styled-components";
+import Calendar from "react-calendar";
 
-function Calender(){
-  return(
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+function Calender() {
+  const [value, onChange] = useState<Value>(new Date());
+  return (
     <Layout>
       <Text>
-        캘린더
+        <Calendar onChange={onChange} value={value}></Calendar>
       </Text>
     </Layout>
-  )
+  );
 }
 
-export default Calender
+export default Calender;
 
 const Layout = styled.div`
   width: 100%;
@@ -20,13 +26,13 @@ const Layout = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 20px;
-  margin-top:16px;
+  margin-top: 16px;
   margin-bottom: 16px;
-`
+`;
 
 const Text = styled.div`
   font-size: 16px;
   margin: 20px;
   margin-bottom: 16px;
   font-weight: bold;
-`
+`;
