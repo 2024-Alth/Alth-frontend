@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Calendar from "react-calendar";
+import "../../../node_modules/react-calendar/src/Calendar.css";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -9,9 +10,9 @@ function Calender() {
   const [value, onChange] = useState<Value>(new Date());
   return (
     <Layout>
-      <Text>
-        <Calendar onChange={onChange} value={value}></Calendar>
-      </Text>
+      <StyledCalendarWrapper>
+        <StyledCalendar onChange={onChange} value={value}></StyledCalendar>
+      </StyledCalendarWrapper>
     </Layout>
   );
 }
@@ -29,6 +30,14 @@ const Layout = styled.div`
   margin-top: 16px;
   margin-bottom: 16px;
 `;
+
+const StyledCalendarWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+`;
+export const StyledCalendar = styled(Calendar)``;
 
 const Text = styled.div`
   font-size: 16px;
