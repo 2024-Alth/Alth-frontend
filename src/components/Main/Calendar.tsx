@@ -2,16 +2,42 @@ import { useState } from "react";
 import styled from "styled-components";
 import Calendar from "react-calendar";
 import "../../../node_modules/react-calendar/src/Calendar.css";
+import moment from "moment";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 function Calender() {
   const [value, onChange] = useState<Value>(new Date());
+
+  //const [dateList, onChangedateList] = useState<Value[]>([]);
+
+  const dateList = ["2024-02-04", "2024-03-04"];
+
   return (
     <Layout>
       <StyledCalendarWrapper>
-        <StyledCalendar onChange={onChange} value={value}></StyledCalendar>
+        <StyledCalendar
+          onChange={onChange}
+          formatDay={(locale, date) => moment(date).format("DD")}
+          calendarType="gregory"
+          next2Label={null}
+          prev2Label={null}
+          minDetail="year"
+          value={value}
+          tileContent={({ date }) => {
+            //TODO : 버튼 위치 수정
+            const html = [];
+            if (dateList.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
+              html.push(
+                <div>
+                  <StyledDot key={moment(date).format("YYYY-MM-DD")} />
+                </div>
+              );
+            }
+            return <>{html}</>;
+          }}
+        ></StyledCalendar>
       </StyledCalendarWrapper>
     </Layout>
   );
@@ -21,7 +47,7 @@ export default Calender;
 
 const Layout = styled.div`
   width: 100%;
-  height: 330px;
+  height: 300px;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -29,19 +55,23 @@ const Layout = styled.div`
   border-radius: 20px;
   margin-top: 16px;
   margin-bottom: 16px;
+  position: relative;
 `;
 
 const StyledCalendarWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  position: relative;
 `;
 export const StyledCalendar = styled(Calendar)``;
 
-const Text = styled.div`
-  font-size: 16px;
-  margin: 20px;
-  margin-bottom: 16px;
-  font-weight: bold;
+export const StyledDot = styled.div`
+  background-color: red;
+  border-radius: 50%;
+  width: 0.3rem;
+  height: 0.3rem;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
 `;

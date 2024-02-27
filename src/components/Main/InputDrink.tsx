@@ -18,10 +18,10 @@ function InputDrink(){
         입력하기
       </Button>
     </Layout>
-  )
+  );
 }
 
-export default InputDrink
+export default InputDrink;
 
 const Layout = styled.div`
   width: 100%;
@@ -30,21 +30,21 @@ const Layout = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 20px;
-  margin-top:16px;
+  margin-top: 16px;
   margin-bottom: 16px;
-`
+`;
 
 const Text = styled.div`
   font-size: 16px;
   margin: 20px;
   margin-bottom: 16px;
   font-weight: bold;
-`
+`;
 
 const Button = styled.button`
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #60D394;
+  background-color: #60d394;
   margin-bottom: 16px;
-`
+`;
