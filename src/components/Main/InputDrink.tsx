@@ -1,12 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 
 function InputDrink(){
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/diary");
+  };
+
   return(
     <Layout>
       <Text>
         술을 드셨나요? 바로 입력해주세요!
       </Text>
-      <Button>
+      <Button onClick={handleButtonClick}>
         입력하기
       </Button>
     </Layout>

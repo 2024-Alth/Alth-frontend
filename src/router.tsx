@@ -1,11 +1,12 @@
 import GlobalLayout from './components/Layout';
 import { createBrowserRouter } from 'react-router-dom';
 import Main from './pages/Main';
-import Social from './pages/Community/SocialMainPage';
+import Social from './pages/Community';
 import SocialIndex from './pages/Community/SocialIndex/SocialIndexPage';
 import SocialPostPage from './pages/Community/SocialPost/SocialPostPage'; 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Diary from './pages/Diary';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path:"/signup",
         element:<Signup/>
+      },
+      {
+        path:"/diary",
+        element:<Diary/>
       }
     ],
   }
