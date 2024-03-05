@@ -1,27 +1,79 @@
-import { useState } from 'react';
-import styled from "styled-components"
-import CardSlider from '../CardSlider';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import CardSlider from "../CardSlider";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const DiaryRegiContainer = () => {
+const DiaryRegiContainer = (date: Date) => {
+  const navigate = useNavigate();
   const [soberIsOpen, setSoberIsOpen] = useState(false);
-  const [soberSelectedOption, setSoberSelectedOption] = useState<string | null>(null);
+  const [soberSelectedOption, setSoberSelectedOption] = useState<string | null>(
+    null
+  );
+  const [value, onChange] = useState<string | null>("");
+  const [dataList, setdataList] = useState([]);
+  useEffect(() => {
+    console.log(date.date);
+    onChange(date.date);
+  }, [date]);
 
-  const soberOptions = ['술을 안 마신 느낌', '조금 알딸딸한 느낌', '술자리의 주인공', '잃어버린 그 날의 기억'];
+  const soberOptions = [
+    "술을 안 마신 느낌",
+    "조금 알딸딸한 느낌",
+    "술자리의 주인공",
+    "잃어버린 그 날의 기억",
+  ];
 
   const handleSoberToggle = () => {
     setSoberIsOpen(!soberIsOpen);
   };
 
   const handleOptionSelect = (option: string): void => {
-    setSoberSelectedOption(option);
+    let feelName = "";
+    if (option === "술을 안 마신 느낌") {
+      feelName = "ALIVE";
+    } else if (option === "조금 알딸딸한 느낌") {
+      feelName = "LITTLE";
+    } else if (option === "술자리의 주인공") {
+      feelName = "FULLY";
+    } else {
+      feelName = "DEATH";
+    }
+    setSoberSelectedOption(feelName);
     setSoberIsOpen(false);
+  };
+
+  const PostRecord = async () => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:8080/user/record",
+        headers: { Authorization: `${localStorage.getItem("user")}` },
+        data: {
+          hangOver: soberSelectedOption,
+          recordMemo: "string",
+          recordDate: value,
+          alcoholRequest: dataList,
+        },
+      });
+      console.log(response);
+      alert("생성되었습니다!");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setAlcoholList = (list) => {
+    console.log(list);
+    setdataList(list);
   };
 
   return (
     <Layout>
-      <TitleText>4월 16일의 기록</TitleText>
+      <TitleText>{value}</TitleText>
       <Divider />
-      <CardSlider />
+      <CardSlider onValueChange={setAlcoholList} />
       <ExpensesContainer>
         <MiddleTitle>지출</MiddleTitle>
         <InputContainer>
@@ -33,8 +85,8 @@ const DiaryRegiContainer = () => {
         <LastTitle>얼마나 취했나요?</LastTitle>
         <Dropdown>
           <DropdownButton onClick={handleSoberToggle}>
-            {soberSelectedOption || '선택'}
-            <Triangle>{soberIsOpen ? '▲' : '▼'}</Triangle>
+            {soberSelectedOption || "선택"}
+            <Triangle>{soberIsOpen ? "▲" : "▼"}</Triangle>
           </DropdownButton>
           <DropdownContent isOpen={soberIsOpen}>
             {soberOptions.map((option) => (
@@ -48,12 +100,12 @@ const DiaryRegiContainer = () => {
           </DropdownContent>
         </Dropdown>
       </SoberDegreeContainer>
-      <Button>등록</Button>
+      <Button onClick={PostRecord}>등록</Button>
     </Layout>
-  )
-}
+  );
+};
 
-export default DiaryRegiContainer
+export default DiaryRegiContainer;
 
 export const Layout = styled.div`
   width: 100%;
@@ -66,17 +118,17 @@ export const Layout = styled.div`
   margin-top: 16px;
   margin-bottom: 16px;
   padding: 20px;
-`
+`;
 
 const TitleText = styled.div`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 16px;
-`
+`;
 
 const Divider = styled.div`
   height: 1px;
-  background-color: #CCCCCC;
+  background-color: #cccccc;
   width: 100%;
 `;
 
@@ -148,7 +200,7 @@ const Dropdown = styled.div`
 `;
 
 const DropdownButton = styled.button`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 3px solid #a7d0b0;
   border-radius: 30px;
   padding: 5px;
@@ -160,17 +212,17 @@ const DropdownContent = styled.ul<{ isOpen: boolean }>`
   position: absolute;
   width: 100%;
   top: 100%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 5px 10px;
   list-style: none;
   margin: 0;
   padding: 0;
-  display: ${(props) => (props.isOpen ? 'block' : 'none')};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
 
 const Triangle = styled.span`
   color: #a7d0b0;
-  margin-left: 4px; 
+  margin-left: 4px;
   font-size: 13px;
   line-height: 0;
 `;
@@ -187,7 +239,7 @@ const Button = styled.button`
   background-color: #a7d0b0;
   border-radius: 30px;
   padding: 5px 10px;
-  cursor: pointer;  
+  cursor: pointer;
   font-size: 15px;
   align-items: center;
   font-weight: bold;
