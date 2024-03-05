@@ -4,37 +4,61 @@ import Calendar from "react-calendar";
 import "../../../node_modules/react-calendar/src/Calendar.css";
 import moment from "moment";
 import axios from "axios";
+type CalendarProps = {
+  onValueChange: (value: Value) => void;
+  onDateChange: (dateList: Value[]) => void;
+  onIndexChange: (indexList: []) => void;
+};
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-function Calender() {
+function Calender({
+  onValueChange,
+  onIndexChange,
+  onDateChange,
+}: CalendarProps) {
   const [value, onChange] = useState<Value>(new Date());
+  // const dateList = ["2024-02-04", "2024-03-04"];
 
-  // const [dateList, onChangedateList] = useState<Value[]>([]);
-  // const [dateDataList, onChangedateDataList] = useState<Value[]>([]);
+  const [dateList, onChangedateList] = useState<Value[]>([]);
+  const [indexList, onChangeindexList] = useState<[]>([]);
 
-  // useEffect(() => {
-  //   GetDate();
-  // }, []);
+  const [dateDataList, onChangedateDataList] = useState<Value[]>([]);
 
-  // const GetDate = async () => {
-  //   try {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: "http://localhost:8080/user/record/all",
-  //       headers: { Authorization: `${localStorage.getItem("user")}` },
-  //     });
-  //     console.log(response.data.recordList);
-  //     const data = response.data.recordList;
-  //     const listData = data.map((item) => item.recordDate);
-  //     onChangedateList(listData);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    onValueChange(value);
+  }, [value]);
 
-  const dateList = ["2024-02-04", "2024-03-04"];
+  useEffect(() => {
+    onDateChange(dateList);
+  }, [dateList]);
+
+  useEffect(() => {
+    onIndexChange(indexList);
+  }, [indexList]);
+
+  useEffect(() => {
+    GetDate();
+  }, []);
+
+  const GetDate = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: "http://localhost:8080/user/record/all",
+        headers: { Authorization: `${localStorage.getItem("user")}` },
+      });
+      console.log(response.data.recordList);
+      const data = response.data.recordList;
+      const listData = data.map((item) => item.recordDate);
+      const listIndexData = data.map((item) => item.recordId);
+      onChangedateList(listData);
+      onChangeindexList(listIndexData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Layout>
