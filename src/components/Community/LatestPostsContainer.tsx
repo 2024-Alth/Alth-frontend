@@ -1,15 +1,21 @@
 // LatestPostsContainer.tsx
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 const LatestPostsContainer: React.FC = () => {
   const [latestPosts, setLatestPosts] = useState<string[]>([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-    setLatestPosts(['게시물 10', '게시물 11', '게시물 12', '게시물 13', '게시물 14']);
+    setLatestPosts([
+      "게시물 10",
+      "게시물 11",
+      "게시물 12",
+      "게시물 13",
+      "게시물 14",
+    ]);
     // // 실제 API 호출 로직을 여기에 추가
     // const fetchLatestPosts = async () => {
     //   try {
@@ -31,7 +37,7 @@ const LatestPostsContainer: React.FC = () => {
   const handleMoreButtonClick = () => {
     navigate(`/postindex`);
   };
-  
+
   // 최대 5개의 게시물만 노출되도록 처리
   const displayedPosts = latestPosts.slice(0, 5);
 
@@ -100,6 +106,6 @@ const PostItem = styled.div`
 
 const Divider = styled.div`
   height: 1px;
-  background-color: #E1E1E1;
+  background-color: #e1e1e1;
   width: 100%;
 `;

@@ -1,20 +1,26 @@
-import { useEffect, useRef, useState } from "react"
-import { useLocation } from "react-router-dom";
-import styled from "styled-components"
-import button from "../assets/headerbutton.svg"
-import profilebutton from "../assets/profile.svg"
-import searchicon from "../assets/searchicon.svg"
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import button from "../assets/headerbutton.svg";
+import profilebutton from "../assets/profile.svg";
+import searchicon from "../assets/searchicon.svg";
 import Sidebar from "./Sidebar";
-import SearchBar from "./Searchbar"
+import SearchBar from "./Searchbar";
 
 function Header() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const modalBackground = useRef<HTMLDivElement>(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (modalOpen && modalBackground.current && !modalBackground.current.contains(e.target as Node)) {
+      if (
+        modalOpen &&
+        modalBackground.current &&
+        !modalBackground.current.contains(e.target as Node)
+      ) {
         setModalOpen(false);
       }
     };
@@ -24,7 +30,6 @@ function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-
   }, [modalOpen]);
 
   const handleSearchIconClick = () => {
@@ -41,22 +46,21 @@ function Header() {
       <Layout>
         <ButtonImg onClick={() => setModalOpen(true)} />
         {modalOpen && (
-          <div ref={modalBackground} onClick={(e) => {
-            if (e.target === modalBackground.current) {
-              setModalOpen(false)
-            }
-          }}>
+          <div
+            ref={modalBackground}
+            onClick={(e) => {
+              if (e.target === modalBackground.current) {
+                setModalOpen(false);
+              }
+            }}
+          >
             <Sidebar></Sidebar>
           </div>
         )}
-        <Title>
-          알쓰
-        </Title>
+        <Title onClick={() => navigate("/")}>알쓰</Title>
         <IconContainer>
-          {isPostPage() && (
-            <SearchIcon onClick={handleSearchIconClick} />
-          )}
-          <ProfileImg />
+          {isPostPage() && <SearchIcon onClick={handleSearchIconClick} />}
+          <ProfileImg onClick={() => navigate("/login")} />
         </IconContainer>
       </Layout>
       {searchBarOpen && (
@@ -68,10 +72,10 @@ function Header() {
         />
       )}
     </>
-  )
+  );
 }
 
-export default Header
+export default Header;
 
 const Layout = styled.div`
   width: 100vw;
@@ -79,7 +83,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #EDF5EF;
+  background-color: #edf5ef;
   justify-content: space-between;
   padding-left: 20px;
   padding-right: 20px;
@@ -91,7 +95,7 @@ const ButtonImg = styled.button`
   background-image: url(${button});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #EDF5EF;
+  background-color: #edf5ef;
   margin: 0;
 `;
 
@@ -101,7 +105,7 @@ const ProfileImg = styled.button`
   background-image: url(${profilebutton});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #EDF5EF;
+  background-color: #edf5ef;
 `;
 
 const SearchIcon = styled.div`
@@ -110,7 +114,7 @@ const SearchIcon = styled.div`
   background-image: url(${searchicon});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #EDF5EF;
+  background-color: #edf5ef;
   cursor: pointer;
   margin-right: 20px;
 `;
@@ -120,12 +124,12 @@ const Title = styled.div`
   font-weight: bold;
   cursor: pointer;
   position: absolute;
-  left: 50%;  
+  left: 50%;
   transform: translateX(-50%);
-`
+`;
 
 const IconContainer = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: row;
   align-items: center;
 `;

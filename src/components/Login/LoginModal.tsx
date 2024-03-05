@@ -91,6 +91,7 @@ function LoginModal() {
         />
       </IdDiv>
       <Button onClick={postLogin}>로그인</Button>
+      <div onClick={() => navigate("/signup")}>회원이 아니신가요?</div>
     </Layout>
   );
 }

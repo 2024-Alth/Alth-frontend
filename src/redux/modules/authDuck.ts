@@ -2,6 +2,7 @@
 import axios from "axios";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { RootState } from "./store";
 // defaults to localStorage for web
 
 // Action Types
